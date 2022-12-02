@@ -1,11 +1,7 @@
 type Query {
   info: String!
-  feed(
-    filter: String
-    skip: Int
-    take: Int
-    orderBy: LinkOrderByInput
-  ): Feed!
+  # retrieves all links from the backend, note that this query also allows for filter, sorting and pagination
+  feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
 }
 
 type Feed {
@@ -15,18 +11,20 @@ type Feed {
 }
 
 type Mutation {
+  # allows authenticated users to create a new link
   post(url: String!, description: String!): Link!
-  signup(
-    email: String!
-    password: String!
-    name: String!
-  ): AuthPayload
+  # create an account for a new user
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  # login an existing user
   login(email: String!, password: String!): AuthPayload
+  # allows authenticated users to vote for an existing link
   vote(linkId: ID!): Vote
 }
 
 type Subscription {
+  # receive realtime updates when a new link is created
   newLink: Link
+  # receive realtime updates when a vote was submitted
   newVote: Vote
 }
 
