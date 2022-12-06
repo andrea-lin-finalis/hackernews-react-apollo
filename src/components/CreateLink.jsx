@@ -13,6 +13,20 @@ const CREATE_LINK = gql`
   }
 `;
 
+const FEED_QUERY = gql`
+  query Links {
+    feed {
+      links {
+        id
+        description
+        url
+        createdAt
+      }
+      id
+    }
+  }
+`;
+
 const CreateLink = () => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
@@ -22,6 +36,10 @@ const CreateLink = () => {
   const [createLink, { loading, error, data }] = useMutation(CREATE_LINK, {
     variables: { url: formState.url, description: formState.description },
     onCompleted: () => navigate('/'),
+    refetchQueries: [
+      { query: FEED_QUERY }, // DocumentNode object parsed with gql
+      'getFeed', // Query name
+    ],
   });
 
   const onSubmit = async (e) => {

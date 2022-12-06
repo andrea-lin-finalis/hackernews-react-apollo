@@ -18,12 +18,14 @@ const FEED_QUERY = gql`
 
 const LinkList = () => {
   const { loading, error, data } = useQuery(FEED_QUERY);
-  const links = data?.feed?.links;
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>{data && links.map((link) => <Link key={link.id} link={link} />)}</div>
+    <div>
+      {data &&
+        data.feed.links.map((link) => <Link key={link.id} link={link} />)}
+    </div>
   );
 };
 
